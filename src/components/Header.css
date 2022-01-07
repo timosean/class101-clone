@@ -1,0 +1,11 @@
+.search-input-form {
+  position: relative;
+  flex: 1 1 0%;
+  height: 100%;
+}
+
+.recommended-words {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
