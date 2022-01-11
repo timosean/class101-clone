@@ -10,7 +10,7 @@ import {
 } from "@class101/ui";
 
 const BackgroundWrapper = styled.div<{ isOpened: boolean }>`
-  width: 100%;
+  width: 100vw;
   height: 44px;
   background: rgb(236, 71, 0);
   cursor: pointer;

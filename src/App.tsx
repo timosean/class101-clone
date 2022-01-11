@@ -1,6 +1,7 @@
 import React from "react";
 import TopBanner from "./components/TopBanner";
 import Header from "./components/Header";
+import CategoryNavbar from "./components/CategoryNavbar";
 import "./App.css";
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
     <>
       <TopBanner />
       <Header />
+      <CategoryNavbar />
     </>
   );
 }
