@@ -1,6 +1,13 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState } from "react";
+import CategoryMenus from "../CategoryMenus";
 import styled from "styled-components";
-import { Button, AnchorButton, DropDownIcon, Body1, Body2 } from "@class101/ui";
+import {
+  Button,
+  AnchorButton,
+  DropDownIcon,
+  Body2,
+  ChevronRightIcon,
+} from "@class101/ui";
 import "./CategoryNavbar.css";
 
 const NavigationBar = styled.div`
@@ -148,13 +155,27 @@ const CategoryDropdownWrapper = styled.div<{ isMenuOpened: boolean }>`
   background-color: rgb(255, 255, 255);
   display: ${(props) => (props.isMenuOpened ? "flex" : "none")};
   margin-left: 112px;
-  top: 52px;
+  top: 42px;
   border-right: 1px solid rgb(239, 239, 239);
   border-bottom: 1px solid rgb(239, 239, 239);
   border-left: 1px solid rgb(239, 239, 239);
   border-image: initial;
   border-top: none;
   z-index: 51;
+`;
+
+const AdditionalDropdownWrapper = styled.div<{ isSubmenuHover: boolean }>`
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  display: ${(props) => (props.isSubmenuHover ? "flex" : "none")};
+  margin-left: 221px;
+  top: 0px;
+  border-right: 1px solid rgb(239, 239, 239);
+  border-bottom: 1px solid rgb(239, 239, 239);
+  border-image: initial;
+  border-top: none;
+  z-index: 51;
+  height: 773px;
 `;
 
 const CategoryDropdownGroup = styled.section`
@@ -190,7 +211,32 @@ const SectionTitle = styled(Body2)`
   height: 11px;
 `;
 
-const SectionItem = styled(AnchorButton)`
+const SectionLink = styled.a`
+  text-decoration: none;
+  color: rgb(26, 26, 26);
+`;
+
+const SectionItem = styled.div`
+  padding: 8px 8px 8px 20px;
+  font-size: 14px;
+  line-height: 18px;
+  margin: 0px;
+  color: rgb(26, 26, 26);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: normal;
+  cursor: pointer;
+  background-color: transparent;
+  height: 34px;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: #f8f8f8;
+  }
+`;
+
+const AdditionalSectionItem = styled(AnchorButton)`
   padding: 8px 8px 8px 20px;
   font-size: 14px;
   line-height: 18px;
@@ -212,10 +258,8 @@ const SectionItem = styled(AnchorButton)`
 //카테고리 바 컴포넌트
 const CategoryNavbar = () => {
   const [isMenuOpened, setMenuOpened] = useState(false);
+  const [isSubmenuHover, setSubmenuHover] = useState(false);
   const [categoryName, setCategoryName] = useState("");
-
-  const navbar = document.querySelector("#navbar");
-  const navleft = navbar?.getBoundingClientRect().left;
 
   const NavtabGroup = [
     { id: 1, name: "이벤트", to: "https://class101.net/events" },
@@ -246,199 +290,9 @@ const CategoryNavbar = () => {
     },
   ];
 
-  const CategoryMenus = [
-    {
-      id: 1,
-      name: "디지털 드로잉",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed0030e",
-      submenus: [
-        {
-          id: 11,
-          name: "일러스트",
-          to: "https://class101.net/search?category=613070fa5b76158cac88344a",
-        },
-        {
-          id: 12,
-          name: "컨셉아트",
-          to: "https://class101.net/search?category=6114891dfe1ca7f7b31b4a23",
-        },
-        {
-          id: 13,
-          name: "캐릭터 드로잉",
-          to: "https://class101.net/search?category=613070fa5b76158cac88344b",
-        },
-        {
-          id: 14,
-          name: "인물 드로잉",
-          to: "https://class101.net/search?category=613070fa5b76158cac88344c",
-        },
-        {
-          id: 15,
-          name: "굿즈 · 이모티콘",
-          to: "https://class101.net/search?category=613070fa5b76158cac88344d",
-        },
-        {
-          id: 16,
-          name: "웹툰",
-          to: "https://class101.net/search?category=613070fa5b76158cac88344e",
-        },
-        {
-          id: 17,
-          name: "캘리그라피",
-          to: "https://class101.net/search?category=613070fa5b76158cac88344f",
-        },
-        {
-          id: 18,
-          name: "더 새로운 디지털 드로잉",
-          to: "https://class101.net/search?category=613070fa5b76158cac883450",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "드로잉",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed00304",
-      submenus: [
-        {
-          id: 20,
-          name: "펜 · 연필",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed00305",
-        },
-        {
-          id: 21,
-          name: "마카",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed00306",
-        },
-        {
-          id: 22,
-          name: "색연필",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed00307",
-        },
-        {
-          id: 23,
-          name: "수채화",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed00308",
-        },
-        {
-          id: 24,
-          name: "오일파스텔",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed00309",
-        },
-        {
-          id: 25,
-          name: "과슈 · 아크릴화",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed0030a",
-        },
-        {
-          id: 26,
-          name: "유화",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed0030b",
-        },
-        {
-          id: 27,
-          name: "동양화",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed0030c",
-        },
-        {
-          id: 28,
-          name: "캘리그라피",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed00312",
-        },
-        {
-          id: 29,
-          name: "더 새로운 드로잉",
-          to: "https://class101.net/search?category=604f1c9756c3676f1ed0030d",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "공예",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed00317",
-    },
-    {
-      id: 4,
-      name: "요리 · 음료",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed0034f",
-    },
-    {
-      id: 5,
-      name: "베이킹 · 디저트",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed0035e",
-    },
-    {
-      id: 6,
-      name: "음악",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed00365",
-    },
-    {
-      id: 7,
-      name: "운동",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed00373",
-    },
-    {
-      id: 8,
-      name: "라이프",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed0037e",
-    },
-    {
-      id: 9,
-      name: "사진 · 영상",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed00389",
-    },
-    {
-      id: 10,
-      name: "금융 · 재테크",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed003b3",
-    },
-    {
-      id: 11,
-      name: "창업 · 부업",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed003b7",
-    },
-    {
-      id: 12,
-      name: "성공 마인드",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed003c3",
-    },
-    {
-      id: 13,
-      name: "디자인",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed0038e",
-    },
-    {
-      id: 14,
-      name: "개발 · 데이터",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed00397",
-    },
-    {
-      id: 15,
-      name: "직무교육",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed003a2",
-    },
-    {
-      id: 16,
-      name: "글쓰기",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed003c4",
-    },
-    {
-      id: 17,
-      name: "언어 · 외국어",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed003cd",
-    },
-    {
-      id: 18,
-      name: "아동 교육",
-      to: "https://class101.net/search?category=604f1c9756c3676f1ed003d6",
-    },
-  ];
-
   return (
     <div className="CategoryNavigationBar__Container">
-      <NavigationBar
-        className="CategoryNavigationBar__NavigationBar"
-        id="navbar"
-      >
+      <NavigationBar className="CategoryNavigationBar__NavigationBar">
         <NavigationTab className="AllCategory">
           <span
             onMouseEnter={() => setMenuOpened(true)}
@@ -481,50 +335,103 @@ const CategoryNavbar = () => {
         <CategoryDropdownGroup>
           <CategoryDropdown>
             <DropdownSection>
-              <SectionTitle>크리에이티브</SectionTitle>
+              <SectionTitle element="h2">크리에이티브</SectionTitle>
               {CategoryMenus.slice(0, 9).map((menu) => (
-                <SectionItem key={menu.id} to={menu.to} className="sectionItem">
-                  <span onMouseEnter={() => setCategoryName(`${menu.name}`)}>
-                    {menu.name}
-                  </span>
-                </SectionItem>
+                <div
+                  onMouseEnter={() => {
+                    setCategoryName(`${menu.name}`);
+                    setSubmenuHover(true);
+                  }}
+                  key={menu.id}
+                >
+                  <SectionItem className="sectionItem">
+                    <SectionLink href={menu.to}>{menu.name}</SectionLink>
+                    <ChevronRightIcon size={12} />
+                  </SectionItem>
+                </div>
               ))}
             </DropdownSection>
 
             <DropdownSection>
-              <SectionTitle>수익 창출</SectionTitle>
+              <SectionTitle element="h2">수익 창출</SectionTitle>
               {CategoryMenus.slice(9, 12).map((menu) => (
-                <SectionItem key={menu.id} to={menu.to} className="sectionItem">
-                  <span onMouseEnter={() => setCategoryName(`${menu.name}`)}>
-                    {menu.name}
-                  </span>
-                </SectionItem>
+                <div
+                  onMouseEnter={() => {
+                    setCategoryName(`${menu.name}`);
+                    setSubmenuHover(true);
+                  }}
+                  key={menu.id}
+                >
+                  <SectionItem className="sectionItem">
+                    <SectionLink href={menu.to}>{menu.name}</SectionLink>
+                    <ChevronRightIcon size={12} />
+                  </SectionItem>
+                </div>
               ))}
             </DropdownSection>
 
             <DropdownSection>
-              <SectionTitle>커리어</SectionTitle>
+              <SectionTitle element="h2">커리어</SectionTitle>
               {CategoryMenus.slice(12, 17).map((menu) => (
-                <SectionItem key={menu.id} to={menu.to} className="sectionItem">
-                  <span onMouseEnter={() => setCategoryName(`${menu.name}`)}>
-                    {menu.name}
-                  </span>
-                </SectionItem>
+                <div
+                  onMouseEnter={() => {
+                    setCategoryName(`${menu.name}`);
+                    setSubmenuHover(true);
+                  }}
+                  key={menu.id}
+                >
+                  <SectionItem className="sectionItem">
+                    <SectionLink href={menu.to}>{menu.name}</SectionLink>
+                    <ChevronRightIcon size={12} />
+                  </SectionItem>
+                </div>
               ))}
             </DropdownSection>
 
             <DropdownSection>
-              <SectionTitle>키즈</SectionTitle>
+              <SectionTitle element="h2">키즈</SectionTitle>
               {CategoryMenus.slice(17).map((menu) => (
-                <SectionItem key={menu.id} to={menu.to} className="sectionItem">
-                  <span onMouseEnter={() => setCategoryName(`${menu.name}`)}>
-                    {menu.name}
-                  </span>
-                </SectionItem>
+                <div
+                  onMouseEnter={() => {
+                    setCategoryName(`${menu.name}`);
+                    setSubmenuHover(true);
+                  }}
+                  key={menu.id}
+                >
+                  <SectionItem className="sectionItem">
+                    <SectionLink href={menu.to}>{menu.name}</SectionLink>
+                    <ChevronRightIcon size={12} />
+                  </SectionItem>
+                </div>
               ))}
             </DropdownSection>
           </CategoryDropdown>
         </CategoryDropdownGroup>
+
+        {/*전체카테고리의 세부메뉴를 hover했을 때 우측에 추가로 나타나는 메뉴리스트*/}
+        <AdditionalDropdownWrapper
+          isSubmenuHover={isSubmenuHover}
+          onMouseEnter={() => setMenuOpened(true)}
+        >
+          <CategoryDropdownGroup>
+            <CategoryDropdown>
+              <DropdownSection>
+                <SectionTitle element="h2">{categoryName}</SectionTitle>
+                {CategoryMenus.find(
+                  (menu) => menu.name === categoryName
+                )?.submenus?.map((submenu) => (
+                  <AdditionalSectionItem
+                    key={submenu.id}
+                    to={submenu.to}
+                    className="sectionItem"
+                  >
+                    {submenu.name}
+                  </AdditionalSectionItem>
+                ))}
+              </DropdownSection>
+            </CategoryDropdown>
+          </CategoryDropdownGroup>
+        </AdditionalDropdownWrapper>
       </CategoryDropdownWrapper>
     </div>
   );
