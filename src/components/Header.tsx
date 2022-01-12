@@ -17,6 +17,7 @@ const HeaderWrapper = styled.div`
   position: relative;
   background-color: white;
   box-shadow: none;
+  width: 100vw;
 `;
 
 const HeaderViewController = styled.div`
@@ -75,6 +76,10 @@ const ClassOrStore = styled.div<{ isOpened: boolean }>`
 
   @media only screen and (min-width: 768px) {
     display: ${(props) => (props.isOpened ? "none" : "flex")};
+  }
+
+  @media only screen and (min-width: 414px) and (max-width: 1023px) {
+    display: none;
   }
 `;
 

@@ -32,6 +32,7 @@ const NavigationBar = styled.div`
 
   @media only screen and (max-width: 1239px) {
     margin: 0px;
+    padding: 0px 32px;
   }
 `;
 
@@ -154,7 +155,6 @@ const CategoryDropdownWrapper = styled.div<{ isMenuOpened: boolean }>`
   position: absolute;
   background-color: rgb(255, 255, 255);
   display: ${(props) => (props.isMenuOpened ? "flex" : "none")};
-  margin-left: 112px;
   top: 42px;
   border-right: 1px solid rgb(239, 239, 239);
   border-bottom: 1px solid rgb(239, 239, 239);
@@ -168,7 +168,6 @@ const AdditionalDropdownWrapper = styled.div<{ isSubmenuHover: boolean }>`
   position: absolute;
   background-color: rgb(255, 255, 255);
   display: ${(props) => (props.isSubmenuHover ? "flex" : "none")};
-  margin-left: 221px;
   top: 0px;
   border-right: 1px solid rgb(239, 239, 239);
   border-bottom: 1px solid rgb(239, 239, 239);
@@ -255,11 +254,27 @@ const AdditionalSectionItem = styled(AnchorButton)`
   }
 `;
 
+const RightIcon = styled.span`
+  visibility: hidden;
+`;
+
 //카테고리 바 컴포넌트
 const CategoryNavbar = () => {
   const [isMenuOpened, setMenuOpened] = useState(false);
   const [isSubmenuHover, setSubmenuHover] = useState(false);
   const [categoryName, setCategoryName] = useState("");
+
+  const navbar = document.getElementById("navbar");
+  const navLeft = navbar?.offsetLeft;
+
+  const makeIconAppear = (name: string) => {
+    document.getElementById(name).style.visibility = "visible";
+    document.getElementById(`link-${name}`).style.fontWeight = "bold";
+  };
+  const makeIconDisappear = (name: string) => {
+    document.getElementById(name).style.visibility = "hidden";
+    document.getElementById(`link-${name}`).style.fontWeight = "normal";
+  };
 
   const NavtabGroup = [
     { id: 1, name: "이벤트", to: "https://class101.net/events" },
@@ -292,7 +307,10 @@ const CategoryNavbar = () => {
 
   return (
     <div className="CategoryNavigationBar__Container">
-      <NavigationBar className="CategoryNavigationBar__NavigationBar">
+      <NavigationBar
+        className="CategoryNavigationBar__NavigationBar"
+        id="navbar"
+      >
         <NavigationTab className="AllCategory">
           <span
             onMouseEnter={() => setMenuOpened(true)}
@@ -331,6 +349,7 @@ const CategoryNavbar = () => {
         isMenuOpened={isMenuOpened}
         onMouseEnter={() => setMenuOpened(true)}
         onMouseLeave={() => setMenuOpened(false)}
+        style={{ marginLeft: `${navLeft - 20}px` }}
       >
         <CategoryDropdownGroup>
           <CategoryDropdown>
@@ -345,8 +364,12 @@ const CategoryNavbar = () => {
                   key={menu.id}
                 >
                   <SectionItem className="sectionItem">
-                    <SectionLink href={menu.to}>{menu.name}</SectionLink>
-                    <ChevronRightIcon size={12} />
+                    <SectionLink href={menu.to} id={`link-${menu.name}`}>
+                      {menu.name}
+                    </SectionLink>
+                    <RightIcon id={menu.name}>
+                      <ChevronRightIcon size={12} />
+                    </RightIcon>
                   </SectionItem>
                 </div>
               ))}
@@ -363,8 +386,12 @@ const CategoryNavbar = () => {
                   key={menu.id}
                 >
                   <SectionItem className="sectionItem">
-                    <SectionLink href={menu.to}>{menu.name}</SectionLink>
-                    <ChevronRightIcon size={12} />
+                    <SectionLink href={menu.to} id={`link-${menu.name}`}>
+                      {menu.name}
+                    </SectionLink>
+                    <RightIcon id={menu.name}>
+                      <ChevronRightIcon size={12} />
+                    </RightIcon>
                   </SectionItem>
                 </div>
               ))}
@@ -381,8 +408,12 @@ const CategoryNavbar = () => {
                   key={menu.id}
                 >
                   <SectionItem className="sectionItem">
-                    <SectionLink href={menu.to}>{menu.name}</SectionLink>
-                    <ChevronRightIcon size={12} />
+                    <SectionLink href={menu.to} id={`link-${menu.name}`}>
+                      {menu.name}
+                    </SectionLink>
+                    <RightIcon id={menu.name}>
+                      <ChevronRightIcon size={12} />
+                    </RightIcon>
                   </SectionItem>
                 </div>
               ))}
@@ -399,8 +430,12 @@ const CategoryNavbar = () => {
                   key={menu.id}
                 >
                   <SectionItem className="sectionItem">
-                    <SectionLink href={menu.to}>{menu.name}</SectionLink>
-                    <ChevronRightIcon size={12} />
+                    <SectionLink href={menu.to} id={`link-${menu.name}`}>
+                      {menu.name}
+                    </SectionLink>
+                    <RightIcon id={menu.name}>
+                      <ChevronRightIcon size={12} />
+                    </RightIcon>
                   </SectionItem>
                 </div>
               ))}
@@ -411,7 +446,12 @@ const CategoryNavbar = () => {
         {/*전체카테고리의 세부메뉴를 hover했을 때 우측에 추가로 나타나는 메뉴리스트*/}
         <AdditionalDropdownWrapper
           isSubmenuHover={isSubmenuHover}
-          onMouseEnter={() => setMenuOpened(true)}
+          onMouseEnter={() => makeIconAppear(categoryName)}
+          onMouseLeave={() => {
+            makeIconDisappear(categoryName);
+            setSubmenuHover(false);
+          }}
+          style={{ left: `221px` }}
         >
           <CategoryDropdownGroup>
             <CategoryDropdown>
