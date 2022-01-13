@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import CategoryMenus from "../CategoryMenus";
 import styled from "styled-components";
-import {
-  VideoOutlineIcon,
-  PersonOutlineIcon,
-  MenuIcon,
-  ToteBagIcon,
-  Colors,
-  Body2,
-  Button,
-} from "@class101/ui";
+import { AiOutlineMenu, AiOutlinePlaySquare } from "react-icons/ai";
+import { IoPersonOutline, IoBagOutline } from "react-icons/io5";
+import { Body2, Button } from "@class101/ui";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -38,16 +32,6 @@ const NavigationContainer = styled.div`
   justify-content: space-between;
 `;
 
-const StyledButtonLink = styled.a`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex: 1 1 0%;
-  cursor: pointer;
-  text-decoration: none;
-`;
-
 const StyledButton = styled.span`
   display: flex;
   flex-direction: column;
@@ -56,15 +40,27 @@ const StyledButton = styled.span`
   flex: 1 1 0%;
   cursor: pointer;
   text-decoration: none;
+  color: rgb(26, 26, 26);
+
+  &.isActive {
+    color: rgb(255, 61, 0);
+  }
 `;
 
 const ContentName = styled.div`
   font-size: 9px;
   font-weight: 600;
-  color: rgb(26, 26, 26);
+  color: inherit;
   line-height: 12px;
   letter-spacing: normal;
   margin: 0px;
+  pointer-events: none;
+`;
+
+const IconArea = styled.span`
+  color: inherit;
+  font-size: 22px;
+  pointer-events: none;
 `;
 
 //카테고리 버튼 눌렀을 시 등장하는 전체 카테고리 관련 컴포넌트
@@ -149,6 +145,17 @@ const BottomButton = styled(Button)`
 const BottomNavigation = () => {
   const [isOpened, setOpened] = useState(false);
 
+  const addClassName = (e: React.MouseEvent<HTMLElement>): void => {
+    //일단 지금 오렌지색으로 변해있는 것의 isActive 클래스를 지우고
+    const removeTarget = document.querySelector(".isActive");
+    removeTarget?.classList.remove("isActive");
+
+    //현재 선택된 버튼에 isActive 클래스를 추가해 오렌지색으로 바꾼다.
+    const target = e.target as HTMLSpanElement;
+    const { classList } = target;
+    classList.add("isActive");
+  };
+
   return (
     <>
       <div
@@ -226,45 +233,57 @@ const BottomNavigation = () => {
 
       <Wrapper>
         <NavigationContainer>
-          <StyledButtonLink
-            href="https://class101.net/"
-            onClick={() => setOpened(false)}
+          <StyledButton
+            onClick={(e) => {
+              setOpened(false);
+              addClassName(e);
+            }}
           >
-            <span>
-              <VideoOutlineIcon size={24} fillColor={Colors.orange700} />
-            </span>
+            <IconArea className="classBtn">
+              <AiOutlinePlaySquare />
+            </IconArea>
             <div className="spacingBox"> </div>
-            <ContentName style={{ color: "rgb(255, 61, 0)" }}>
-              클래스
-            </ContentName>
-          </StyledButtonLink>
-          <StyledButtonLink
-            href="https://class101.net/"
-            onClick={() => setOpened(false)}
-          >
-            <span>
-              <ToteBagIcon size={24} />
-            </span>
-            <div className="spacingBox"> </div>
-            <ContentName>스토어</ContentName>
-          </StyledButtonLink>
-          <StyledButton onClick={() => setOpened(true)}>
-            <span>
-              <MenuIcon size={24} />
-            </span>
-            <div className="spacingBox"> </div>
-            <ContentName>카테고리</ContentName>
+            <ContentName className="classBtn">클래스</ContentName>
           </StyledButton>
-          <StyledButtonLink
-            href="https://class101.net/login?redirect=%2Fme%3F"
-            onClick={() => setOpened(false)}
+
+          <StyledButton
+            onClick={(e) => {
+              setOpened(false);
+              addClassName(e);
+            }}
           >
-            <span>
-              <PersonOutlineIcon size={24} />
-            </span>
+            <IconArea className="storeBtn">
+              <IoBagOutline />
+            </IconArea>
             <div className="spacingBox"> </div>
-            <ContentName>마이페이지</ContentName>
-          </StyledButtonLink>
+            <ContentName className="storeBtn">스토어</ContentName>
+          </StyledButton>
+
+          <StyledButton
+            onClick={(e) => {
+              setOpened(true);
+              addClassName(e);
+            }}
+          >
+            <IconArea className="cateBtn">
+              <AiOutlineMenu />
+            </IconArea>
+            <div className="spacingBox"> </div>
+            <ContentName className="cateBtn">카테고리</ContentName>
+          </StyledButton>
+
+          <StyledButton
+            onClick={(e) => {
+              setOpened(false);
+              addClassName(e);
+            }}
+          >
+            <IconArea className="pageBtn">
+              <IoPersonOutline />
+            </IconArea>
+            <div className="spacingBox"> </div>
+            <ContentName className="pageBtn">마이페이지</ContentName>
+          </StyledButton>
         </NavigationContainer>
       </Wrapper>
     </>
