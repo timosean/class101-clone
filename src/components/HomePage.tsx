@@ -526,7 +526,7 @@ const HomePage = () => {
                   <SwiperContainer>
                     <SwiperWrapper className="swiper-wrapper">
                       {Timedeal.map((item) => (
-                        <SwiperSlide key={item.id}>
+                        <SwiperSlide key={item.id} style={{ width: "276px" }}>
                           <div
                             className="slide-item"
                             style={{
@@ -739,7 +739,7 @@ const HomePage = () => {
                     <SwiperContainer>
                       <SwiperWrapper className="md-wrapper">
                         {MDClass.map((item) => (
-                          <SwiperSlide key={item.id}>
+                          <SwiperSlide key={item.id} style={{ width: "276px" }}>
                             <div
                               className="slide-item"
                               style={{
