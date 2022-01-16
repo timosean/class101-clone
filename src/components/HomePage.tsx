@@ -35,6 +35,10 @@ const SpacingBox = styled.div`
   @media only screen and (min-width: 1024px) {
     margin-top: 72px;
   }
+
+  @media only screen and (max-width: 1023px) {
+    margin-top: 48px;
+  }
 `;
 
 const SectionTitle = styled.div`
@@ -109,6 +113,10 @@ const CarouselButton = styled.button`
     color: rgb(239, 239, 239);
     cursor: not-allowed;
   }
+
+  @media only screen and (max-width: 1239px) {
+    display: none;
+  }
 `;
 
 const SwiperContainer = styled.div`
@@ -119,6 +127,15 @@ const SwiperContainer = styled.div`
   padding: 0px;
   z-index: 1;
   box-sizing: border-box;
+
+  @media only screen and (max-width: 1023px) {
+    padding: 0px 24px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const SwiperWrapper = styled.div`
@@ -129,7 +146,7 @@ const SwiperWrapper = styled.div`
   height: 100%;
   z-index: 1;
   display: flex;
-  transition-property: transform;
+  transition-property: transform, -webkit-transform;
   box-sizing: content-box;
 `;
 
@@ -147,6 +164,13 @@ const SwiperSlide = styled.div`
   @media only screen and (max-width: 1022px) {
     width: calc(50% - 16px);
     margin-right: 16px;
+  }
+
+  &.popEvent {
+    @media only screen and (max-width: 1022px) {
+      width: calc(100% - 16px);
+      margin-right: 16px;
+    }
   }
 `;
 
@@ -187,6 +211,11 @@ const HeartButton = styled.button`
   &:hover {
     background-color: rgba(255, 255, 255, 0.3);
   }
+
+  @media only screen and (max-width: 1023px) {
+    top: 4px;
+    right: 6px;
+  }
 `;
 
 const ProductCardBadge = styled.div`
@@ -205,6 +234,7 @@ const BadgeContext = styled.div`
   color: rgb(255, 255, 255);
   padding: 4px 6px;
   border-radius: 1px;
+  font-size: 9px;
 
   @media only screen and (min-width: 1024px) {
     padding: 6px 8px;
@@ -496,7 +526,7 @@ const HomePage = () => {
                   <SwiperContainer>
                     <SwiperWrapper className="swiper-wrapper">
                       {Timedeal.map((item) => (
-                        <SwiperSlide key={item.id} style={{ width: "276px" }}>
+                        <SwiperSlide key={item.id}>
                           <div
                             className="slide-item"
                             style={{
@@ -635,9 +665,15 @@ const HomePage = () => {
                               />
 
                               <div>
-                                <Discount>월 {item.price.salePrice}원</Discount>
+                                <Discount>
+                                  {Math.ceil(
+                                    (item.price.salePrice * 100) /
+                                      item.price.originalPrice
+                                  )}
+                                  %
+                                </Discount>
                                 <OriginalPrice>
-                                  (정가 {item.price.originalPrice}원)
+                                  월 {item.price.salePrice}원
                                 </OriginalPrice>
                                 <LearnMonth>
                                   ({item.price.installment}개월)
@@ -703,7 +739,7 @@ const HomePage = () => {
                     <SwiperContainer>
                       <SwiperWrapper className="md-wrapper">
                         {MDClass.map((item) => (
-                          <SwiperSlide key={item.id} style={{ width: "276px" }}>
+                          <SwiperSlide key={item.id}>
                             <div
                               className="slide-item"
                               style={{
@@ -832,10 +868,14 @@ const HomePage = () => {
 
                                 <div>
                                   <Discount>
-                                    월 {item.price.salePrice}원
+                                    {Math.ceil(
+                                      (item.price.salePrice * 100) /
+                                        item.price.originalPrice
+                                    )}
+                                    %
                                   </Discount>
                                   <OriginalPrice>
-                                    (정가 {item.price.originalPrice}원)
+                                    월 {item.price.salePrice}원
                                   </OriginalPrice>
                                   <LearnMonth>
                                     ({item.price.installment}개월)
@@ -910,7 +950,7 @@ const HomePage = () => {
                 <SwiperContainer>
                   <SwiperWrapper className="popular-event">
                     {PopularEvent.map((item) => (
-                      <SwiperSlide key={item.id} style={{ width: "376px" }}>
+                      <SwiperSlide key={item.id} className="popEvent">
                         <div
                           className="slide-item"
                           style={{
@@ -1050,194 +1090,201 @@ const HomePage = () => {
                 </AnchorButtonWrapper>
               </SectionTitle>
 
-              <div
-                className="OutsideNavigationCarousel"
-                style={{ position: "relative" }}
-              >
-                <CarouselButton
-                  id="prevBtn"
-                  style={{ left: "0px", top: "100px" }}
-                  disabled={osCount === 0}
-                  onClick={onOsLeftClick}
+              <SectionWOSideNavCarousel>
+                <div
+                  className="OutsideNavigationCarousel"
+                  style={{ position: "relative" }}
                 >
-                  <FiChevronLeft />
-                </CarouselButton>
-                <SwiperContainer>
-                  <SwiperWrapper className="opensoon-class">
-                    {OpenSoon.map((item) => (
-                      <SwiperSlide key={item.id} style={{ width: "276px" }}>
-                        <div
-                          className="slide-item"
-                          style={{
-                            display: "flex",
-                            alignItems: "stretch",
-                            flexDirection: "column",
-                          }}
-                        >
+                  <CarouselButton
+                    id="prevBtn"
+                    style={{ left: "0px", top: "100px" }}
+                    disabled={osCount === 0}
+                    onClick={onOsLeftClick}
+                  >
+                    <FiChevronLeft />
+                  </CarouselButton>
+                  <SwiperContainer>
+                    <SwiperWrapper className="opensoon-class">
+                      {OpenSoon.map((item) => (
+                        <SwiperSlide key={item.id} style={{ width: "276px" }}>
                           <div
-                            className="card-container"
-                            style={{ position: "relative", width: "100%" }}
+                            className="slide-item"
+                            style={{
+                              display: "flex",
+                              alignItems: "stretch",
+                              flexDirection: "column",
+                            }}
                           >
                             <div
-                              className="card-coverimage-area"
-                              style={{
-                                overflow: "hidden",
-                                borderRadius: "3px",
-                                marginBottom: "8px",
-                              }}
+                              className="card-container"
+                              style={{ position: "relative", width: "100%" }}
                             >
-                              <RatioImageContainer>
-                                <picture
-                                  className="ResponsiveImage"
-                                  style={{
-                                    top: "0px",
-                                    left: "0px",
-                                    width: "100%",
-                                    height: "100%",
-                                    position: "absolute",
-                                  }}
-                                >
-                                  <img src={item.img} alt={item.title} />
-                                </picture>
+                              <div
+                                className="card-coverimage-area"
+                                style={{
+                                  overflow: "hidden",
+                                  borderRadius: "3px",
+                                  marginBottom: "8px",
+                                }}
+                              >
+                                <RatioImageContainer>
+                                  <picture
+                                    className="ResponsiveImage"
+                                    style={{
+                                      top: "0px",
+                                      left: "0px",
+                                      width: "100%",
+                                      height: "100%",
+                                      position: "absolute",
+                                    }}
+                                  >
+                                    <img src={item.img} alt={item.title} />
+                                  </picture>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "stretch",
+                                      flexDirection: "column",
+                                    }}
+                                  >
+                                    <HeartButton type="button">
+                                      <FiHeart style={{ color: "white" }} />
+                                    </HeartButton>
+                                  </div>
+                                </RatioImageContainer>
+                              </div>
+
+                              <div
+                                className="card-body"
+                                style={{
+                                  margin: "0",
+                                  padding: "0",
+                                  border: "0",
+                                  fontSize: "100%",
+                                  verticalAlign: "baseline",
+                                }}
+                              >
+                                <div
+                                  className="spacing-box"
+                                  style={{ marginBottom: "8px" }}
+                                />
+
                                 <div
                                   style={{
                                     display: "flex",
+                                    width: "100%",
                                     alignItems: "stretch",
-                                    flexDirection: "column",
+                                    flexDirection: "row",
                                   }}
                                 >
-                                  <HeartButton type="button">
-                                    <FiHeart style={{ color: "white" }} />
-                                  </HeartButton>
+                                  <p
+                                    style={{
+                                      margin: "0",
+                                      padding: "0",
+                                      border: "0",
+                                      fontSize: "0.6875rem",
+                                      lineHeight: "0.875rem",
+                                      fontWeight: "700",
+                                      color: "#000000",
+                                    }}
+                                  >
+                                    {item.creator}
+                                  </p>
                                 </div>
-                              </RatioImageContainer>
-                            </div>
+                                <CardTitle>{item.title}</CardTitle>
+                                <LikeThumb>
+                                  <LikeThumbFrame>
+                                    <CountTag style={{ color: "#fd3049" }}>
+                                      <CountIcon>
+                                        <GiHighFive
+                                          style={{
+                                            fontSize: "12px",
+                                            color: "#fd3049",
+                                          }}
+                                        />
+                                      </CountIcon>
+                                      {(item.cheer.score * 100) /
+                                        item.cheer.goal}
+                                      % 달성
+                                    </CountTag>
+                                    <CountTag>
+                                      <CountIcon>
+                                        <AiFillHeart
+                                          style={{ fontSize: "12px" }}
+                                        />
+                                      </CountIcon>
+                                      {item.cheer.score}
+                                    </CountTag>
+                                  </LikeThumbFrame>
+                                </LikeThumb>
+                              </div>
 
-                            <div
-                              className="card-body"
-                              style={{
-                                margin: "0",
-                                padding: "0",
-                                border: "0",
-                                fontSize: "100%",
-                                verticalAlign: "baseline",
-                              }}
-                            >
                               <div
-                                className="spacing-box"
-                                style={{ marginBottom: "8px" }}
+                                style={{
+                                  flex: "none",
+                                  backgroundColor: "#FAFAFA",
+                                  width: "100%",
+                                  height: "1px",
+                                  marginTop: "8px",
+                                  marginBottom: "8px",
+                                }}
                               />
 
                               <div
-                                style={{
-                                  display: "flex",
-                                  width: "100%",
-                                  alignItems: "stretch",
-                                  flexDirection: "row",
-                                }}
+                                style={{ display: "flex", flexFlow: "wrap" }}
                               >
-                                <p
+                                <div
                                   style={{
-                                    margin: "0",
-                                    padding: "0",
-                                    border: "0",
-                                    fontSize: "0.6875rem",
-                                    lineHeight: "0.875rem",
-                                    fontWeight: "700",
-                                    color: "#000000",
+                                    fontSize: "11px",
+                                    color: "rgb(162,162,162)",
+                                    lineHeight: "16px",
                                   }}
                                 >
-                                  {item.creator}
-                                </p>
+                                  응원 마감까지 &nbsp;
+                                </div>
+                                <div
+                                  style={{
+                                    fontSize: "11px",
+                                    color: "rgb(26, 26, 26)",
+                                    lineHeight: "16px",
+                                  }}
+                                >
+                                  {dateDiff(item.cheer.finishDate)}일 남음
+                                </div>
                               </div>
-                              <CardTitle>{item.title}</CardTitle>
-                              <LikeThumb>
-                                <LikeThumbFrame>
-                                  <CountTag style={{ color: "#fd3049" }}>
-                                    <CountIcon>
-                                      <GiHighFive
-                                        style={{
-                                          fontSize: "12px",
-                                          color: "#fd3049",
-                                        }}
-                                      />
-                                    </CountIcon>
-                                    {(item.cheer.score * 100) / item.cheer.goal}
-                                    % 달성
-                                  </CountTag>
-                                  <CountTag>
-                                    <CountIcon>
-                                      <AiFillHeart
-                                        style={{ fontSize: "12px" }}
-                                      />
-                                    </CountIcon>
-                                    {item.cheer.score}
-                                  </CountTag>
-                                </LikeThumbFrame>
-                              </LikeThumb>
-                            </div>
 
-                            <div
-                              style={{
-                                flex: "none",
-                                backgroundColor: "#FAFAFA",
-                                width: "100%",
-                                height: "1px",
-                                marginTop: "8px",
-                                marginBottom: "8px",
-                              }}
-                            />
-
-                            <div style={{ display: "flex", flexFlow: "wrap" }}>
                               <div
-                                style={{
-                                  fontSize: "11px",
-                                  color: "rgb(162,162,162)",
-                                  lineHeight: "16px",
-                                }}
-                              >
-                                응원 마감까지 &nbsp;
-                              </div>
-                              <div
-                                style={{
-                                  fontSize: "11px",
-                                  color: "rgb(26, 26, 26)",
-                                  lineHeight: "16px",
-                                }}
-                              >
-                                {dateDiff(item.cheer.finishDate)}일 남음
-                              </div>
+                                className="spacing-box"
+                                style={{ marginTop: "8px" }}
+                              />
+
+                              <Button fill color={ButtonColor.ORANGE_LIGHT}>
+                                응원하기
+                              </Button>
                             </div>
-
-                            <div
-                              className="spacing-box"
-                              style={{ marginTop: "8px" }}
-                            />
-
-                            <Button fill color={ButtonColor.ORANGE_LIGHT}>
-                              응원하기
-                            </Button>
                           </div>
-                        </div>
-                      </SwiperSlide>
-                    ))}
-                  </SwiperWrapper>
-                </SwiperContainer>
-                <CarouselButton
-                  id="nextBtn"
-                  style={{
-                    right: "0px",
-                    top: "100px",
-                    transform: "translateY(-50%) translateX(52px)",
-                  }}
-                  disabled={osCount === 5}
-                  onClick={onOsRightClick}
-                >
-                  <FiChevronRight />
-                </CarouselButton>
-              </div>
+                        </SwiperSlide>
+                      ))}
+                    </SwiperWrapper>
+                  </SwiperContainer>
+                  <CarouselButton
+                    id="nextBtn"
+                    style={{
+                      right: "0px",
+                      top: "100px",
+                      transform: "translateY(-50%) translateX(52px)",
+                    }}
+                    disabled={osCount === 5}
+                    onClick={onOsRightClick}
+                  >
+                    <FiChevronRight />
+                  </CarouselButton>
+                </div>
+              </SectionWOSideNavCarousel>
             </OpenSoonSection>
           </SectionBox>
+
+          <SpacingBox style={{ marginBottom: "300px" }} />
         </div>
       </OuterDiv>
     </div>

@@ -21,8 +21,8 @@ const MDClass = [
     like: 278,
     thumsUp: 94,
     price: {
-      originalPrice: 49000,
-      salePrice: 99000,
+      originalPrice: 99000,
+      salePrice: 49000,
       installment: 5,
     },
     coupon: 6,

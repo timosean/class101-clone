@@ -67,6 +67,11 @@ const IconArea = styled.span`
 const AllCategoryContainer = styled.div<{ isOpened: boolean }>`
   margin-left: 24px;
   margin-right: 24px;
+  position: absolute;
+  top: 116px;
+  z-index: 1000;
+  background-color: white;
+  width: 100vw;
 
   display: ${(props) => (props.isOpened ? "block" : "none")};
 `;
@@ -238,6 +243,7 @@ const BottomNavigation = () => {
               setOpened(false);
               addClassName(e);
             }}
+            className="isActive"
           >
             <IconArea className="classBtn">
               <AiOutlinePlaySquare />

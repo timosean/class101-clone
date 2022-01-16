@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TopBanner from "./components/TopBanner";
 import Header from "./components/Header";
 import CategoryNavbar from "./components/CategoryNavbar";

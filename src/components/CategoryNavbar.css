@@ -3,14 +3,17 @@
   width: 100%;
   background-color: rgb(255, 255, 255);
   box-shadow: rgb(239 239 239) 0px -1px 0px inset;
-
-  @media only screen and (max-width: 1023px) {
-    position: sticky;
-    top: 0px;
-    z-index: 999;
-  }
+  height: 44px;
 }
 
 .sectionItem > a {
   justify-content: space-between;
+}
+
+@media only screen and (max-width: 1023px) {
+  .CategoryNavigationBar__Container {
+    position: sticky;
+    top: 0px;
+    z-index: 999;
+  }
 }

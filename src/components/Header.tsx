@@ -26,6 +26,12 @@ const HeaderViewController = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  box-sizing: border-box;
+
+  @media only screen and (max-width: 1023px) {
+    padding: 18px 24px 8px;
+    margin: 0px;
+  }
 `;
 
 const HeaderContents = styled.div`
@@ -33,6 +39,7 @@ const HeaderContents = styled.div`
   align-items: center;
   width: 100%;
   padding: 20px 0px;
+  box-sizing: border-box;
 
   @media only screen and (min-width: 1240px) {
     max-width: 1176px;
@@ -48,6 +55,11 @@ const HeaderContents = styled.div`
 
   @media only screen and (max-width: 1023px) {
     padding: 8px 24px 8px 20px;
+    margin: 0px;
+  }
+
+  @media only screen and (max-width: 500px) {
+    padding: 0px;
     margin: 0px;
   }
 `;
@@ -79,6 +91,10 @@ const ClassOrStore = styled.div<{ isOpened: boolean }>`
   }
 
   @media only screen and (min-width: 414px) and (max-width: 1023px) {
+    display: none;
+  }
+
+  @media only screen and (max-width: 413px) {
     display: none;
   }
 `;

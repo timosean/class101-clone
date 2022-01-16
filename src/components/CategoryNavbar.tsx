@@ -20,19 +20,20 @@ const NavigationBar = styled.div`
   align-items: center;
   box-shadow: rgb(239 239 239) 0px -1px 0px inset;
   overflow: auto;
+  box-sizing: border-box;
 
   @media only screen and (min-width: 768px) {
     justify-content: flex-start;
   }
 
-  @media only screen and (max-width: 1023px) {
-    padding: 0px 24px;
-    overflow: auto;
-  }
-
   @media only screen and (max-width: 1239px) {
     margin: 0px;
     padding: 0px 32px;
+  }
+
+  @media only screen and (max-width: 1023px) {
+    padding: 0px 24px;
+    overflow: hidden;
   }
 `;
 
@@ -108,7 +109,12 @@ const AnchorNavigationTab = styled(AnchorButton)`
   }
 
   @media only screen and (max-width: 1023px) {
-    font-weight: 400;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.15px;
+    margin: 0px 16px 0px 0px;
+    padding: 12px 0px;
 
     &:hover {
       font-weight: bold;
