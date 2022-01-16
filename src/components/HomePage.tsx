@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Timedeal from "../Timedeal";
-import { Subtitle1 } from "@class101/ui";
+import MDClass from "../MDClass";
+import PopularEvent from "../PopularEvent";
+import OpenSoon from "../OpenSoon";
+import { Subtitle1, Button, ButtonColor } from "@class101/ui";
 import { FiChevronLeft, FiChevronRight, FiHeart } from "react-icons/fi";
+import { AiFillHeart } from "react-icons/ai";
 import { MdAlarm } from "react-icons/md";
+import { GiHighFive } from "react-icons/gi";
 import { IoMdThumbsUp } from "react-icons/io";
 
 const OuterDiv = styled.div`
@@ -178,6 +183,10 @@ const HeartButton = styled.button`
   align-items: center;
   flex-direction: row;
   font-size: 24px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
 `;
 
 const ProductCardBadge = styled.div`
@@ -314,21 +323,116 @@ const LearnMonth = styled.span`
   color: #a2a2a2;
 `;
 
+const MDRecommendSection = styled.section`
+  position: relative;
+  margin-top: 72px;
+
+  @media only screen and (max-width: 1023px) {
+    margin-top: 48px;
+  }
+`;
+
+const OpenSoonSection = styled.section`
+  position: relative;
+  margin-top: 48px;
+
+  @media only screen and (max-width: 1023px) {
+    margin-top: 24px;
+  }
+`;
+
 const HomePage = () => {
+  //-----------------------------------------------특가 캐로슬-------------------------------------------------------
   const [tdCount, setTdCount] = useState(0);
 
   //특가 캐로슬에서 이전버튼 클릭 시
   const onLeftBtnClick = () => {
-    setTdCount(tdCount - 1);
-    const wrapper = document.querySelector(".swiper-wrapper") as HTMLDivElement;
-    wrapper.style.transform = `translate3d(${-300 * tdCount + 600}px, 0, 0)`;
+    setTdCount((num) => num - 1);
   };
 
   //특가 캐로슬에서 다음버튼 클릭 시
   const onRightBtnClick = () => {
-    setTdCount(tdCount + 1);
+    setTdCount((num) => num + 1);
+  };
+
+  useEffect(() => {
     const wrapper = document.querySelector(".swiper-wrapper") as HTMLDivElement;
     wrapper.style.transform = `translate3d(${-300 * tdCount}px, 0, 0)`;
+  }, [tdCount]);
+
+  //-----------------------------------------------MD 캐로슬-------------------------------------------------------
+  const [mdCount, setMdCount] = useState(0);
+
+  //MD 캐로슬에서 이전버튼 클릭 시
+  const onMdLeftClick = () => {
+    setMdCount((num) => num - 1);
+  };
+
+  //MD 캐로슬에서 다음버튼 클릭 시
+  const onMdRightClick = () => {
+    setMdCount((num) => num + 1);
+  };
+
+  useEffect(() => {
+    const wrapper = document.querySelector(".md-wrapper") as HTMLDivElement;
+    wrapper.style.transform = `translate3d(${-300 * mdCount}px, 0, 0)`;
+  }, [mdCount]);
+
+  //-----------------------------------------------인기 이벤트 캐로슬-------------------------------------------------------
+  const [peCount, setPeCount] = useState(0);
+  const todayDate = new Date().getDate();
+
+  //인기 이벤트 캐로슬에서 이전버튼 클릭 시
+  const onPeLeftClick = () => {
+    setPeCount((num) => num - 1);
+  };
+
+  //인기 이벤트 캐로슬에서 다음버튼 클릭 시
+  const onPeRightClick = () => {
+    setPeCount((num) => num + 1);
+  };
+
+  useEffect(() => {
+    const wrapper = document.querySelector(".popular-event") as HTMLDivElement;
+    wrapper.style.transform = `translate3d(${-400 * peCount}px, 0, 0)`;
+  }, [peCount]);
+
+  //D-day 계산하는 함수
+  const countDday = (current: number, lastDate: string) => {
+    const finishDate: number = new Date(lastDate).getDate();
+    const diff: number = finishDate - current;
+
+    if (diff === 0) {
+      return "D-day";
+    } else return `D-${diff}`;
+  };
+
+  //-----------------------------------------------오픈 예정 캐로슬-------------------------------------------------------
+  const [osCount, setOsCount] = useState(0);
+
+  //인기 이벤트 캐로슬에서 이전버튼 클릭 시
+  const onOsLeftClick = () => {
+    setOsCount((num) => num - 1);
+  };
+
+  //인기 이벤트 캐로슬에서 다음버튼 클릭 시
+  const onOsRightClick = () => {
+    setOsCount((num) => num + 1);
+  };
+
+  useEffect(() => {
+    const wrapper = document.querySelector(".opensoon-class") as HTMLDivElement;
+    wrapper.style.transform = `translate3d(${-300 * osCount}px, 0, 0)`;
+  }, [osCount]);
+
+  const dateDiff = (lastDate: string) => {
+    const finishDate = new Date(lastDate).getTime();
+    const startDate = new Date().getTime();
+
+    const diff = Math.ceil(
+      Math.abs(finishDate - startDate) / (1000 * 3600 * 24)
+    );
+    return diff;
   };
 
   return (
@@ -501,7 +605,9 @@ const HomePage = () => {
                                   <LikeThumbFrame>
                                     <CountTag>
                                       <CountIcon>
-                                        <FiHeart style={{ fontSize: "12px" }} />
+                                        <AiFillHeart
+                                          style={{ fontSize: "12px" }}
+                                        />
                                       </CountIcon>
                                       {item.like}
                                     </CountTag>
@@ -557,6 +663,580 @@ const HomePage = () => {
                 </div>
               </SectionWOSideNavCarousel>
             </div>
+          </SectionBox>
+
+          <SpacingBox />
+
+          <SectionBox>
+            <div data-test-id="recommend-product-section">
+              <MDRecommendSection>
+                <div
+                  className="header"
+                  style={{
+                    marginBottom: "20px",
+                    width: "100%",
+                    maxWidth: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    className="headerTop"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <Subtitle1 element="h2">MD 추천 클래스</Subtitle1>
+                  </div>
+                </div>
+                <SectionWOSideNavCarousel>
+                  <div
+                    className="OutsideNavigationCarousel"
+                    style={{ position: "relative" }}
+                  >
+                    <CarouselButton
+                      id="prevBtn"
+                      style={{ left: "0px" }}
+                      disabled={mdCount === 0}
+                      onClick={onMdLeftClick}
+                    >
+                      <FiChevronLeft />
+                    </CarouselButton>
+                    <SwiperContainer>
+                      <SwiperWrapper className="md-wrapper">
+                        {MDClass.map((item) => (
+                          <SwiperSlide key={item.id} style={{ width: "276px" }}>
+                            <div
+                              className="slide-item"
+                              style={{
+                                display: "flex",
+                                alignItems: "stretch",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <div
+                                className="card-container"
+                                style={{ position: "relative", width: "100%" }}
+                              >
+                                <div
+                                  className="card-coverimage-area"
+                                  style={{
+                                    overflow: "hidden",
+                                    borderRadius: "3px",
+                                    marginBottom: "8px",
+                                  }}
+                                >
+                                  <RatioImageContainer>
+                                    <picture
+                                      className="ResponsiveImage"
+                                      style={{
+                                        top: "0px",
+                                        left: "0px",
+                                        width: "100%",
+                                        height: "100%",
+                                        position: "absolute",
+                                      }}
+                                    >
+                                      <img src={item.img} alt={item.title} />
+                                    </picture>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "stretch",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      <HeartButton type="button">
+                                        <FiHeart style={{ color: "white" }} />
+                                      </HeartButton>
+                                    </div>
+                                    {item.coupon !== 0 && (
+                                      <ProductCardBadge>
+                                        <BadgeContext>
+                                          {item.coupon}만원 쿠폰
+                                        </BadgeContext>
+                                      </ProductCardBadge>
+                                    )}
+                                  </RatioImageContainer>
+                                </div>
+
+                                <div
+                                  className="card-body"
+                                  style={{
+                                    margin: "0",
+                                    padding: "0",
+                                    border: "0",
+                                    fontSize: "100%",
+                                    verticalAlign: "baseline",
+                                  }}
+                                >
+                                  <div
+                                    className="spacing-box"
+                                    style={{ marginBottom: "8px" }}
+                                  />
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      width: "100%",
+                                      alignItems: "stretch",
+                                      flexDirection: "row",
+                                    }}
+                                  >
+                                    <p
+                                      style={{
+                                        margin: "0",
+                                        padding: "0",
+                                        border: "0",
+                                        fontSize: "0.6875rem",
+                                        lineHeight: "0.875rem",
+                                        fontWeight: "700",
+                                        color: "#000000",
+                                      }}
+                                    >
+                                      {item.creator}
+                                    </p>
+                                  </div>
+                                  <CardTitle>{item.title}</CardTitle>
+                                  <LikeThumb>
+                                    <LikeThumbFrame>
+                                      <CountTag>
+                                        <CountIcon>
+                                          <AiFillHeart
+                                            style={{ fontSize: "12px" }}
+                                          />
+                                        </CountIcon>
+                                        {item.like}
+                                      </CountTag>
+                                      {item.thumsUp !== 0 && (
+                                        <CountTag>
+                                          <CountIcon>
+                                            <IoMdThumbsUp
+                                              style={{ fontSize: "12px" }}
+                                            />
+                                          </CountIcon>
+                                          {item.thumsUp}
+                                        </CountTag>
+                                      )}
+                                    </LikeThumbFrame>
+                                  </LikeThumb>
+                                </div>
+
+                                <div
+                                  style={{
+                                    flex: "none",
+                                    backgroundColor: "#FAFAFA",
+                                    width: "100%",
+                                    height: "1px",
+                                    marginTop: "8px",
+                                    marginBottom: "8px",
+                                  }}
+                                />
+
+                                <div>
+                                  <Discount>
+                                    월 {item.price.salePrice}원
+                                  </Discount>
+                                  <OriginalPrice>
+                                    (정가 {item.price.originalPrice}원)
+                                  </OriginalPrice>
+                                  <LearnMonth>
+                                    ({item.price.installment}개월)
+                                  </LearnMonth>
+                                </div>
+                              </div>
+                            </div>
+                          </SwiperSlide>
+                        ))}
+                      </SwiperWrapper>
+                    </SwiperContainer>
+                    <CarouselButton
+                      id="nextBtn"
+                      style={{
+                        right: "0px",
+                        transform: "translateY(-50%) translateX(52px)",
+                      }}
+                      disabled={mdCount === 3}
+                      onClick={onMdRightClick}
+                    >
+                      <FiChevronRight />
+                    </CarouselButton>
+                  </div>
+                </SectionWOSideNavCarousel>
+              </MDRecommendSection>
+            </div>
+          </SectionBox>
+
+          <SpacingBox />
+
+          <SectionBox>
+            <SectionTitle>
+              <a
+                href="https://class101.net/events?index=0&onGoingOnly=true&status=ENTIRE"
+                style={{
+                  display: "inline-flex",
+                  flexDirection: "column",
+                  textDecoration: "none",
+                }}
+              >
+                <div
+                  className="TitleTop"
+                  style={{
+                    width: "100%",
+                    justifyContent: "space-between",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Subtitle1 element="h2">진행중인 인기 이벤트</Subtitle1>
+                </div>
+              </a>
+              <AnchorButtonWrapper>
+                <StyledAnchorButton href="https://class101.net/events?index=0&onGoingOnly=true&status=ENTIRE">
+                  전체 이벤트 보기
+                </StyledAnchorButton>
+              </AnchorButtonWrapper>
+            </SectionTitle>
+            <SectionWOSideNavCarousel>
+              <div
+                className="OutsideNavigationCarousel"
+                style={{ position: "relative" }}
+              >
+                <CarouselButton
+                  id="prevBtn"
+                  style={{ left: "0px", top: "135px" }}
+                  disabled={peCount === 0}
+                  onClick={onPeLeftClick}
+                >
+                  <FiChevronLeft />
+                </CarouselButton>
+                <SwiperContainer>
+                  <SwiperWrapper className="popular-event">
+                    {PopularEvent.map((item) => (
+                      <SwiperSlide key={item.id} style={{ width: "376px" }}>
+                        <div
+                          className="slide-item"
+                          style={{
+                            display: "flex",
+                            alignItems: "stretch",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <div
+                            className="card-container"
+                            style={{ position: "relative", width: "100%" }}
+                          >
+                            <div
+                              className="card-coverimage-area"
+                              style={{
+                                overflow: "hidden",
+                                borderRadius: "3px",
+                                marginBottom: "10px",
+                              }}
+                            >
+                              <RatioImageContainer>
+                                <picture
+                                  className="ResponsiveImage"
+                                  style={{
+                                    top: "0px",
+                                    left: "0px",
+                                    width: "100%",
+                                    height: "100%",
+                                    position: "absolute",
+                                  }}
+                                >
+                                  <img src={item.img} alt={item.title} />
+                                </picture>
+                              </RatioImageContainer>
+                            </div>
+
+                            <div
+                              className="card-body"
+                              style={{
+                                margin: "0",
+                                padding: "0",
+                                border: "0",
+                                fontSize: "100%",
+                                verticalAlign: "baseline",
+                                height: "20px",
+                              }}
+                            >
+                              <CardTitle
+                                style={{
+                                  fontSize: "14px",
+                                  fontWeight: "700",
+                                  color: "rgb(26, 26, 26)",
+                                  lineHeight: "20px",
+                                }}
+                              >
+                                {item.title}
+                              </CardTitle>
+                              <div
+                                className="spacing-box"
+                                style={{ marginTop: "2px" }}
+                              />
+                            </div>
+                            <div>
+                              <Discount>
+                                {item.period.startDate === "0"
+                                  ? `상시 이벤트`
+                                  : countDday(
+                                      todayDate,
+                                      item.period.finishDate
+                                    )}
+                              </Discount>
+                              <OriginalPrice>
+                                {item.period.startDate !== "0" &&
+                                  `${item.period.startDate}~${item.period.finishDate}`}
+                              </OriginalPrice>
+                            </div>
+                          </div>
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </SwiperWrapper>
+                </SwiperContainer>
+                <CarouselButton
+                  id="nextBtn"
+                  style={{
+                    right: "0px",
+                    top: "135px",
+                    transform: "translateY(-50%) translateX(52px)",
+                  }}
+                  disabled={peCount === 4}
+                  onClick={onPeRightClick}
+                >
+                  <FiChevronRight />
+                </CarouselButton>
+              </div>
+            </SectionWOSideNavCarousel>
+          </SectionBox>
+
+          <SpacingBox />
+
+          <SectionBox>
+            <OpenSoonSection>
+              <SectionTitle>
+                <a
+                  href="https://class101.net/products/preview/list"
+                  style={{
+                    display: "inline-flex",
+                    flexDirection: "column",
+                    textDecoration: "none",
+                  }}
+                >
+                  <div
+                    className="TitleTop"
+                    style={{
+                      width: "100%",
+                      justifyContent: "space-between",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Subtitle1 element="h2">오픈 예정 클래스</Subtitle1>
+                  </div>
+                  <p
+                    style={{
+                      color: "#a2a2a2",
+                      margin: "4px 0 0",
+                      fontSize: "14px",
+                    }}
+                  >
+                    오픈 예정인 클래스를 응원하면 얼리버드 오픈 시 알려드려요!
+                  </p>
+                </a>
+                <AnchorButtonWrapper>
+                  <StyledAnchorButton href="https://class101.net/products/preview/list">
+                    전체 클래스 보기
+                  </StyledAnchorButton>
+                </AnchorButtonWrapper>
+              </SectionTitle>
+
+              <div
+                className="OutsideNavigationCarousel"
+                style={{ position: "relative" }}
+              >
+                <CarouselButton
+                  id="prevBtn"
+                  style={{ left: "0px", top: "100px" }}
+                  disabled={osCount === 0}
+                  onClick={onOsLeftClick}
+                >
+                  <FiChevronLeft />
+                </CarouselButton>
+                <SwiperContainer>
+                  <SwiperWrapper className="opensoon-class">
+                    {OpenSoon.map((item) => (
+                      <SwiperSlide key={item.id} style={{ width: "276px" }}>
+                        <div
+                          className="slide-item"
+                          style={{
+                            display: "flex",
+                            alignItems: "stretch",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <div
+                            className="card-container"
+                            style={{ position: "relative", width: "100%" }}
+                          >
+                            <div
+                              className="card-coverimage-area"
+                              style={{
+                                overflow: "hidden",
+                                borderRadius: "3px",
+                                marginBottom: "8px",
+                              }}
+                            >
+                              <RatioImageContainer>
+                                <picture
+                                  className="ResponsiveImage"
+                                  style={{
+                                    top: "0px",
+                                    left: "0px",
+                                    width: "100%",
+                                    height: "100%",
+                                    position: "absolute",
+                                  }}
+                                >
+                                  <img src={item.img} alt={item.title} />
+                                </picture>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "stretch",
+                                    flexDirection: "column",
+                                  }}
+                                >
+                                  <HeartButton type="button">
+                                    <FiHeart style={{ color: "white" }} />
+                                  </HeartButton>
+                                </div>
+                              </RatioImageContainer>
+                            </div>
+
+                            <div
+                              className="card-body"
+                              style={{
+                                margin: "0",
+                                padding: "0",
+                                border: "0",
+                                fontSize: "100%",
+                                verticalAlign: "baseline",
+                              }}
+                            >
+                              <div
+                                className="spacing-box"
+                                style={{ marginBottom: "8px" }}
+                              />
+
+                              <div
+                                style={{
+                                  display: "flex",
+                                  width: "100%",
+                                  alignItems: "stretch",
+                                  flexDirection: "row",
+                                }}
+                              >
+                                <p
+                                  style={{
+                                    margin: "0",
+                                    padding: "0",
+                                    border: "0",
+                                    fontSize: "0.6875rem",
+                                    lineHeight: "0.875rem",
+                                    fontWeight: "700",
+                                    color: "#000000",
+                                  }}
+                                >
+                                  {item.creator}
+                                </p>
+                              </div>
+                              <CardTitle>{item.title}</CardTitle>
+                              <LikeThumb>
+                                <LikeThumbFrame>
+                                  <CountTag style={{ color: "#fd3049" }}>
+                                    <CountIcon>
+                                      <GiHighFive
+                                        style={{
+                                          fontSize: "12px",
+                                          color: "#fd3049",
+                                        }}
+                                      />
+                                    </CountIcon>
+                                    {(item.cheer.score * 100) / item.cheer.goal}
+                                    % 달성
+                                  </CountTag>
+                                  <CountTag>
+                                    <CountIcon>
+                                      <AiFillHeart
+                                        style={{ fontSize: "12px" }}
+                                      />
+                                    </CountIcon>
+                                    {item.cheer.score}
+                                  </CountTag>
+                                </LikeThumbFrame>
+                              </LikeThumb>
+                            </div>
+
+                            <div
+                              style={{
+                                flex: "none",
+                                backgroundColor: "#FAFAFA",
+                                width: "100%",
+                                height: "1px",
+                                marginTop: "8px",
+                                marginBottom: "8px",
+                              }}
+                            />
+
+                            <div style={{ display: "flex", flexFlow: "wrap" }}>
+                              <div
+                                style={{
+                                  fontSize: "11px",
+                                  color: "rgb(162,162,162)",
+                                  lineHeight: "16px",
+                                }}
+                              >
+                                응원 마감까지 &nbsp;
+                              </div>
+                              <div
+                                style={{
+                                  fontSize: "11px",
+                                  color: "rgb(26, 26, 26)",
+                                  lineHeight: "16px",
+                                }}
+                              >
+                                {dateDiff(item.cheer.finishDate)}일 남음
+                              </div>
+                            </div>
+
+                            <div
+                              className="spacing-box"
+                              style={{ marginTop: "8px" }}
+                            />
+
+                            <Button fill color={ButtonColor.ORANGE_LIGHT}>
+                              응원하기
+                            </Button>
+                          </div>
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </SwiperWrapper>
+                </SwiperContainer>
+                <CarouselButton
+                  id="nextBtn"
+                  style={{
+                    right: "0px",
+                    top: "100px",
+                    transform: "translateY(-50%) translateX(52px)",
+                  }}
+                  disabled={osCount === 5}
+                  onClick={onOsRightClick}
+                >
+                  <FiChevronRight />
+                </CarouselButton>
+              </div>
+            </OpenSoonSection>
           </SectionBox>
         </div>
       </OuterDiv>
